@@ -13,8 +13,12 @@ BuildRequires:	scons
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-Library providing binary-decimal and decimal-binary routines for IEEE
-doubles.
+This project (double-conversion) provides binary-decimal and
+decimal-binary routines for IEEE doubles.
+
+The library consists of efficient conversion routines that have been
+extracted from the V8 JavaScript engine. The code has been refactored
+and improved so that it can be used more easily in other projects.
 
 %package devel
 Summary:	Library providing binary-decimal and decimal-binary routines for IEEE doubles
@@ -22,7 +26,11 @@ Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description devel
-Contains header files for developing applications that use the %{name} library.
+Contains header files for developing applications that use the %{name}
+library.
+
+There is extensive documentation in src/double-conversion.h. Other
+examples can be found in test/cctest/test-conversions.cc.
 
 %prep
 %setup -q -n %{name}
