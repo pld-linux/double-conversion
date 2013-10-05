@@ -63,20 +63,10 @@ cp -p %{SOURCE1} SConstruct
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_libdir},%{_includedir}/%{name}}
-
 %scons install \
 	DESTDIR=$RPM_BUILD_ROOT \
 
-cp -p src/double-conversion.h $RPM_BUILD_ROOT%{_includedir}/%{name}
-cp -p src/bignum.h $RPM_BUILD_ROOT%{_includedir}/%{name}
-cp -p src/bignum-dtoa.h $RPM_BUILD_ROOT%{_includedir}/%{name}
-cp -p src/cached-powers.h $RPM_BUILD_ROOT%{_includedir}/%{name}
-cp -p src/diy-fp.h $RPM_BUILD_ROOT%{_includedir}/%{name}
-cp -p src/fast-dtoa.h $RPM_BUILD_ROOT%{_includedir}/%{name}
-cp -p src/fixed-dtoa.h $RPM_BUILD_ROOT%{_includedir}/%{name}
-cp -p src/ieee.h $RPM_BUILD_ROOT%{_includedir}/%{name}
-cp -p src/strtod.h $RPM_BUILD_ROOT%{_includedir}/%{name}
-cp -p src/utils.h $RPM_BUILD_ROOT%{_includedir}/%{name}
+cp -p src/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}
 
 %clean
 %{__rm} -rf $RPM_BUILD_ROOT
