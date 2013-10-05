@@ -39,6 +39,18 @@ library.
 There is extensive documentation in src/double-conversion.h. Other
 examples can be found in test/cctest/test-conversions.cc.
 
+%package static
+Summary:	Static %{name} library
+Summary(pl.UTF-8):	Statyczna biblioteka %{name}
+Group:		Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
+
+%description static
+Static %{name} library.
+
+%description static -l pl.UTF-8
+Statyczna biblioteka %{name}.
+
 %prep
 %setup -q -n %{name}
 cp -p %{SOURCE1} SConstruct
