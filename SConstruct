@@ -16,6 +16,9 @@ debug = ARGUMENTS.get('debug', 0)
 optimize = ARGUMENTS.get('optimize', 0)
 env.Replace(CXX = ARGUMENTS.get('CXX', 'g++'))
 
+# for shared lib, requires scons 2.3.0
+env['SHLIBVERSION'] = '0.0.0'
+
 CCFLAGS = []
 if int(debug):
   CCFLAGS.append(ARGUMENTS.get('CXXFLAGS', '-g -Wall -Werror'))
@@ -39,7 +42,7 @@ shared_lib = env.SharedLibrary(library_name, double_conversion_shared_objects)
 
 env.Program('run_tests', double_conversion_test_sources, LIBS=[static_lib])
 
-env.Install(libdir, shared_lib)
+env.InstallVersionedLib(libdir, shared_lib)
 env.Install(libdir, static_lib)
 env.Install(libdir, static_lib_pic)
 

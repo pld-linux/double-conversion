@@ -16,7 +16,7 @@ Source0:	http://double-conversion.googlecode.com/files/%{name}-%{version}.tar.gz
 URL:		http://code.google.com/p/double-conversion
 Source1:	SConstruct
 BuildRequires:	libstdc++-devel
-BuildRequires:	scons
+BuildRequires:	scons >= 2.3.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -60,6 +60,9 @@ cp -p %{SOURCE1} SConstruct
 	CXX="%{__cxx}"
 	CXXFLAGS="%{__cxx}"
 
+# avoid file exists errors, when entering install
+rm -f libdouble_conversion.so libdouble_conversion.so.0
+
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_libdir},%{_includedir}/%{name}}
@@ -77,10 +80,12 @@ cp -p src/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}
 %files
 %defattr(644,root,root,755)
 %doc LICENSE README AUTHORS
-%{_libdir}/libdouble_conversion.so
+%attr(755,root,root) %{_libdir}/libdouble_conversion.so.*.*.*
+%ghost %{_libdir}/libdouble_conversion.so.0
 
 %files devel
 %defattr(644,root,root,755)
+%{_libdir}/libdouble_conversion.so
 %{_includedir}/%{name}
 
 %if %{with static_libs}
