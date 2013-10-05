@@ -5,10 +5,12 @@ print(test)
 env = Environment(CPPPATH='#/src')
 debug = ARGUMENTS.get('debug', 0)
 optimize = ARGUMENTS.get('optimize', 0)
+env.Replace(CXX = ARGUMENTS.get('CXX', 'g++'))
+
 if int(debug):
   env.Append(CCFLAGS = '-g -Wall -Werror')
 if int(optimize):
-  env.Append(CCFLAGS = '-O3')
+  env.Append(CCFLAGS = ARGUMENTS.get('CXXFLAGS', '-O3'))
 print double_conversion_sources
 print double_conversion_test_sources
 double_conversion_shared_objects = [

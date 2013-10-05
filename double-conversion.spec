@@ -34,9 +34,13 @@ examples can be found in test/cctest/test-conversions.cc.
 
 %prep
 %setup -q -n %{name}
+cp -p %{SOURCE1} SConstruct
 
 %build
-%scons -f %{SOURCE1}
+%scons \
+	optimize=1 \
+	CXX="%{__cxx}"
+	CXXFLAGS="%{__cxx}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
