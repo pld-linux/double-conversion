@@ -1,3 +1,10 @@
+#
+# TODO
+# - versioning in shared lib
+
+# Conditional build:
+%bcond_without	static_libs	# don't build static libraries
+
 Summary:	Library providing binary-decimal and decimal-binary routines for IEEE doubles
 Name:		double-conversion
 Version:	1.1.1
@@ -38,7 +45,6 @@ cp -p %{SOURCE1} SConstruct
 
 %build
 %scons \
-	optimize=1 \
 	CXX="%{__cxx}"
 	CXXFLAGS="%{__cxx}"
 
@@ -46,7 +52,8 @@ cp -p %{SOURCE1} SConstruct
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_libdir},%{_includedir}/%{name}}
 
-cp -p libdouble_conversion.a libdouble_conversion_pic.a $RPM_BUILD_ROOT%{_libdir}
+%scons install \
+	DESTDIR=$RPM_BUILD_ROOT \
 
 cp -p src/double-conversion.h $RPM_BUILD_ROOT%{_includedir}/%{name}
 cp -p src/bignum.h $RPM_BUILD_ROOT%{_includedir}/%{name}
@@ -62,12 +69,21 @@ cp -p src/utils.h $RPM_BUILD_ROOT%{_includedir}/%{name}
 %clean
 %{__rm} -rf $RPM_BUILD_ROOT
 
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
+
 %files
 %defattr(644,root,root,755)
 %doc LICENSE README AUTHORS
+%{_libdir}/libdouble_conversion.so
 
 %files devel
 %defattr(644,root,root,755)
+%{_includedir}/%{name}
+
+%if %{with static_libs}
+%files static
+%defattr(644,root,root,755)
 %{_libdir}/libdouble_conversion.a
 %{_libdir}/libdouble_conversion_pic.a
-%{_includedir}/%{name}
+%endif
