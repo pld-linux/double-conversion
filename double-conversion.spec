@@ -79,7 +79,7 @@ cp -p src/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}
 
 %files
 %defattr(644,root,root,755)
-%doc LICENSE README AUTHORS
+%doc LICENSE README AUTHORS Changelog
 %attr(755,root,root) %{_libdir}/libdouble_conversion.so.*.*.*
 %ghost %{_libdir}/libdouble_conversion.so.0
 
