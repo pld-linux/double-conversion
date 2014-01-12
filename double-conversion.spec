@@ -7,12 +7,12 @@
 
 Summary:	Library providing binary-decimal and decimal-binary routines for IEEE doubles
 Name:		double-conversion
-Version:	1.1.1
+Version:	1.1.4
 Release:	1
 License:	BSD
 Group:		Libraries
 Source0:	http://double-conversion.googlecode.com/files/%{name}-%{version}.tar.gz
-# Source0-md5:	29b533ed4311161267bff1a9a97e2953
+# Source0-md5:	53669dba2d23e308dc512d6330852aa5
 URL:		http://code.google.com/p/double-conversion
 Source1:	SConstruct
 BuildRequires:	libstdc++-devel
@@ -52,7 +52,7 @@ Static %{name} library.
 Statyczna biblioteka %{name}.
 
 %prep
-%setup -q -n %{name}
+%setup -qc
 cp -p %{SOURCE1} SConstruct
 
 %build
@@ -61,7 +61,7 @@ cp -p %{SOURCE1} SConstruct
 	CXXFLAGS="%{__cxx}"
 
 # avoid file exists errors, when entering install
-rm -f libdouble_conversion.so libdouble_conversion.so.0
+rm -f libdouble-conversion.so libdouble-conversion.so.0
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -80,17 +80,17 @@ cp -p src/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}
 %files
 %defattr(644,root,root,755)
 %doc LICENSE README AUTHORS Changelog
-%attr(755,root,root) %{_libdir}/libdouble_conversion.so.*.*.*
-%ghost %{_libdir}/libdouble_conversion.so.0
+%attr(755,root,root) %{_libdir}/libdouble-conversion.so.*.*.*
+%ghost %{_libdir}/libdouble-conversion.so.0
 
 %files devel
 %defattr(644,root,root,755)
-%{_libdir}/libdouble_conversion.so
+%{_libdir}/libdouble-conversion.so
 %{_includedir}/%{name}
 
 %if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
-%{_libdir}/libdouble_conversion.a
-%{_libdir}/libdouble_conversion_pic.a
+%{_libdir}/libdouble-conversion.a
+%{_libdir}/libdouble-conversion_pic.a
 %endif
