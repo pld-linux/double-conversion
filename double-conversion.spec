@@ -7,14 +7,13 @@
 
 Summary:	Library providing binary-decimal and decimal-binary routines for IEEE doubles
 Name:		double-conversion
-Version:	1.1.4
+Version:	1.1.5
 Release:	1
 License:	BSD
 Group:		Libraries
 Source0:	http://double-conversion.googlecode.com/files/%{name}-%{version}.tar.gz
-# Source0-md5:	53669dba2d23e308dc512d6330852aa5
+# Source0-md5:	bf019021765fa346f85e46c6abf7c945
 URL:		http://code.google.com/p/double-conversion
-Source1:	SConstruct
 BuildRequires:	libstdc++-devel
 BuildRequires:	scons >= 2.3.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -53,7 +52,6 @@ Statyczna biblioteka %{name}.
 
 %prep
 %setup -qc
-cp -p %{SOURCE1} SConstruct
 
 %build
 %scons \
