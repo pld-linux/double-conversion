@@ -13,7 +13,7 @@ License:	BSD
 Group:		Libraries
 Source0:	http://double-conversion.googlecode.com/files/%{name}-%{version}.tar.gz
 # Source0-md5:	bf019021765fa346f85e46c6abf7c945
-URL:		http://code.google.com/p/double-conversion
+URL:		https://github.com/floitsch/double-conversion
 BuildRequires:	libstdc++-devel
 BuildRequires:	scons >= 2.3.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
