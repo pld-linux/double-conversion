@@ -4,6 +4,7 @@
 
 # Conditional build:
 %bcond_without	static_libs	# don't build static libraries
+%bcond_without	tests		# build without tests
 
 Summary:	Library providing binary-decimal and decimal-binary routines for IEEE doubles
 Name:		double-conversion
@@ -13,7 +14,7 @@ License:	BSD
 Group:		Libraries
 Source0:	http://double-conversion.googlecode.com/files/%{name}-%{version}.tar.gz
 # Source0-md5:	bf019021765fa346f85e46c6abf7c945
-URL:		https://github.com/floitsch/double-conversion
+URL:		https://github.com/google/double-conversion
 BuildRequires:	libstdc++-devel
 BuildRequires:	scons >= 2.3.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -57,6 +58,8 @@ Statyczna biblioteka %{name}.
 %scons \
 	CXX="%{__cxx}"
 	CXXFLAGS="%{__cxx}"
+
+%{?with_tests:%{__make} test}
 
 # avoid file exists errors, when entering install
 rm -f libdouble-conversion.so libdouble-conversion.so.0
