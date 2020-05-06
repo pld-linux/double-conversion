@@ -1,22 +1,21 @@
 #
-# TODO
-# - versioning in shared lib
-
 # Conditional build:
-%bcond_without	static_libs	# don't build static libraries
+%bcond_without	static_libs	# static library
 %bcond_without	tests		# build without tests
 
 Summary:	Library providing binary-decimal and decimal-binary routines for IEEE doubles
+Summary(pl.UTF-8):	Biblioteka dostarczająca przejścia binarno-dziesiętne i dziesiętno-binarne dla typów double IEEE
 Name:		double-conversion
-Version:	1.1.5
-Release:	2
+Version:	3.1.5
+Release:	1
 License:	BSD
 Group:		Libraries
-Source0:	http://double-conversion.googlecode.com/files/%{name}-%{version}.tar.gz
-# Source0-md5:	bf019021765fa346f85e46c6abf7c945
+#Source0Download: https://github.com/google/double-conversion/releases
+Source0:	https://github.com/google/double-conversion/archive/v%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	e94d3a33a417e692e5600e75019f0272
 URL:		https://github.com/google/double-conversion
+BuildRequires:	cmake >= 3.0
 BuildRequires:	libstdc++-devel
-BuildRequires:	scons >= 2.3.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -27,50 +26,79 @@ The library consists of efficient conversion routines that have been
 extracted from the V8 JavaScript engine. The code has been refactored
 and improved so that it can be used more easily in other projects.
 
+%description -l pl.UTF-8
+Projekt double-conversion dostarcza funkcje przejścia
+binarno-dziesiętne i dziesiętno-binarne dla typów double IEEE.
+
+Biblioteka składa się z wydajnych funkcji konwersji, wyciągniętych z
+silnika JavaScriptu V8. Kod został zrefaktorowany i ulepszony, dzięki
+czemu może być łatwiej używany w innych projektach.
+
 %package devel
-Summary:	Library providing binary-decimal and decimal-binary routines for IEEE doubles
+Summary:	Header files for double-conversion library
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki double-conversion
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	libstdc++-devel
 
 %description devel
-Contains header files for developing applications that use the %{name}
-library.
+Contains header files for developing applications that use the
+double-conversion library.
 
-There is extensive documentation in src/double-conversion.h. Other
-examples can be found in test/cctest/test-conversions.cc.
+There is extensive documentation in double-conversion.h.
+
+%description devel -l pl.UTF_8
+Ten pakiet zawiera pliki nagłówkowe do tworzenia aplikacji
+wykorzystujących bibliotekę double-conversion.
+
+W pliku double-conversion.h zawarta jest obszerna dokumentacja.
 
 %package static
-Summary:	Static %{name} library
-Summary(pl.UTF-8):	Statyczna biblioteka %{name}
+Summary:	Static double-conversion library
+Summary(pl.UTF-8):	Statyczna biblioteka double-conversion
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
-Static %{name} library.
+Static double-conversion library.
 
 %description static -l pl.UTF-8
-Statyczna biblioteka %{name}.
+Statyczna biblioteka double-conversion.
 
 %prep
-%setup -qc
+%setup -q
 
 %build
-%scons \
-	CXX="%{__cxx}"
-	CXXFLAGS="%{__cxx}"
+%if %{with static_libs}
+install -d build-static
+cd build-static
+%cmake .. \
+	-DBUILD_SHARED_LIBS=OFF
 
-%{?with_tests:%{__make} test}
+%{__make}
+cd ..
+%endif
 
-# avoid file exists errors, when entering install
-rm -f libdouble-conversion.so libdouble-conversion.so.0
+install -d build
+cd build
+%cmake .. \
+	%{?with_tests:-DBUILD_TESTING=ON}
+
+%{__make}
+
+%{?with_tests:ctest}
+
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_libdir},%{_includedir}/%{name}}
-%scons install \
-	DESTDIR=$RPM_BUILD_ROOT \
 
-cp -p src/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}
+%if %{with static_libs}
+%{__make} -C build-static install \
+	DESTDIR=$RPM_BUILD_ROOT
+%endif
+
+%{__make} -C build install \
+	DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 %{__rm} -rf $RPM_BUILD_ROOT
@@ -80,18 +108,18 @@ cp -p src/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}
 
 %files
 %defattr(644,root,root,755)
-%doc LICENSE README AUTHORS Changelog
+%doc AUTHORS Changelog LICENSE README.md
 %attr(755,root,root) %{_libdir}/libdouble-conversion.so.*.*.*
-%ghost %{_libdir}/libdouble-conversion.so.0
+%attr(755,root,root) %ghost %{_libdir}/libdouble-conversion.so.3
 
 %files devel
 %defattr(644,root,root,755)
-%{_libdir}/libdouble-conversion.so
-%{_includedir}/%{name}
+%attr(755,root,root) %{_libdir}/libdouble-conversion.so
+%{_includedir}/double-conversion
+%{_libdir}/cmake/double-conversion
 
 %if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libdouble-conversion.a
-%{_libdir}/libdouble-conversion_pic.a
 %endif
