@@ -6,13 +6,13 @@
 Summary:	Library providing binary-decimal and decimal-binary routines for IEEE doubles
 Summary(pl.UTF-8):	Biblioteka dostarczająca przejścia binarno-dziesiętne i dziesiętno-binarne dla typów double IEEE
 Name:		double-conversion
-Version:	3.1.5
+Version:	3.1.6
 Release:	1
 License:	BSD
 Group:		Libraries
 #Source0Download: https://github.com/google/double-conversion/releases
 Source0:	https://github.com/google/double-conversion/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	e94d3a33a417e692e5600e75019f0272
+# Source0-md5:	432fa87cc342a5c45ed812cdc1f8c209
 URL:		https://github.com/google/double-conversion
 BuildRequires:	cmake >= 3.0
 BuildRequires:	libstdc++-devel
@@ -87,7 +87,6 @@ cd build
 %{__make}
 
 %{?with_tests:ctest}
-
 
 %install
 rm -rf $RPM_BUILD_ROOT
